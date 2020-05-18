@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.kingskys'
 
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
@@ -30,8 +33,8 @@ dependencies {
 //    implementation fileTree(dir: 'lib/in.srain.cube/cube-sdk', include: ['*.aar', '*.jar'], exclude: [])
 //    implementation fileTree(dir: 'lib/in.srain.cube/ultra-ptr', include: ['*.aar', '*.jar'], exclude: [])
 
-    implementation 'in.srain.cube:ultra-ptr:1.0.11'
+    implementation ('in.srain.cube:ultra-ptr:1.0.11@aar') { transitive = true }
     implementation 'in.srain.cube:clog:1.0.2'
-    implementation 'in.srain.cube:cube-sdk:1.0.44.39-SNAPSHOT@aar'
+    implementation ('in.srain.cube:cube-sdk:1.0.44.39-SNAPSHOT@aar')
 
 }
