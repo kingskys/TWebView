@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,6 +102,8 @@ public class TWebView extends LinearLayout {
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(false);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setBlockNetworkImage(false);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
 
         webView.addJavascriptInterface(new Object() {
             @JavascriptInterface
@@ -116,7 +119,7 @@ public class TWebView extends LinearLayout {
             }
         }, "atools");
 
-        webView.setWebViewClient(new TWebViewClient() {
+        webView.setWebViewClient(new TWebViewClient(getContext()) {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);

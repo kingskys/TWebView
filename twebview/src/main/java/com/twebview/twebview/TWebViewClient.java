@@ -1,5 +1,9 @@
 package com.twebview.twebview;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.text.TextUtils;
@@ -11,10 +15,18 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class TWebViewClient  extends WebViewClient {
+import java.lang.ref.WeakReference;
+import java.net.URISyntaxException;
+import java.util.List;
 
-    public TWebViewClient() {
+public class TWebViewClient  extends WebViewClient {
+    private WeakReference<Context> weakReference = null;
+
+    public TWebViewClient(Context context) {
         super();
+        if (context != null) {
+            weakReference = new WeakReference<Context>(context);
+        }
     }
 
     private void log(String msg) {
@@ -29,8 +41,47 @@ public class TWebViewClient  extends WebViewClient {
             return false;
         }
 
-        view.loadUrl(url);
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+//            view.loadUrl(url); // 如果使用loadUrl，有的界面会不能返回
+//            return true;
+            return false;
+        }
 
+        if (queryActiviesCount(url) > 0 && openActivity(url)) {
+            return true;
+        }
+
+        return true;
+    }
+
+    private int queryActiviesCount(String url) {
+        try {
+            if (weakReference == null || weakReference.get() == null) {
+                return 0;
+            }
+            Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+            PackageManager packageManager = weakReference.get().getPackageManager();
+            List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            return list.size();
+        } catch (Throwable e) {
+            return 0;
+        }
+    }
+
+    private boolean openActivity(String url) {
+        try {
+            if (weakReference == null || weakReference.get() == null) {
+                return false;
+            }
+
+            Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+            PackageManager packageManager = weakReference.get().getPackageManager();
+            ResolveInfo resolveInfo = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            if (resolveInfo != null) {
+                weakReference.get().startActivity(intent);
+                return true;
+            }
+        } catch (Throwable e) {}
         return false;
     }
 
@@ -85,6 +136,7 @@ public class TWebViewClient  extends WebViewClient {
     @Override
     public void onReceivedLoginRequest(WebView view, String realm,
                                        String account, String args) {
+        super.onReceivedLoginRequest(view, realm, account, args);
 //        log("onReceivedLoginRequest - account = " + account + ", args = " + args);
 //        log("realm = " + realm);
     }
