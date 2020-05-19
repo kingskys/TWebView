@@ -9,6 +9,16 @@ Android WebView 简单封装
 gradle 使用
 -------------
 <pre>
+buildscript {
+    ...
+    
+    dependencies {
+        ...
+        
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    }
+}
+
 allprojects {
     repositories {
         ...
