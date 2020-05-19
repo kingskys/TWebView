@@ -9,31 +9,19 @@ Android WebView 简单封装
 gradle 使用
 -------------
 <pre>
-buildscript {
-    ...
-    
-    dependencies {
-        ...
-        
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-    }
-}
-
 allprojects {
     repositories {
         ...
         
         maven { url "https://jitpack.io" }
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots'
-        }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 }
 
 dependencies {
     ...
 
-    implementation 'com.github.kingskys:TWebView:v1.1.3'
+    implementation 'com.github.kingskys:TWebView:v1.1.4'
 }
 </pre>
 
