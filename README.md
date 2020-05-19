@@ -29,5 +29,5 @@ dependencies {
 
 致谢
 ----
- https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
- https://github.com/Justson/AgentWeb
+ * https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
+ * https://github.com/Justson/AgentWeb
